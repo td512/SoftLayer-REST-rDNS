@@ -1,0 +1,25 @@
+# The API Username
+API_USER=""
+
+# The API Key
+API_KEY=""
+
+# The first 3 octets
+IP_RANGE="0.0.0"
+
+# The ### STARTING ### numeric of the fourth octet
+IP_FINAL="0"
+
+# The end numeric for the fourth octet
+IP_FINAL_END="255"
+
+# The Domain format. IP will be prepended to string
+DOMAIN="0-0-0.domain.com"
+
+# Should I set the first 2 numerics to network- and gateway- and the last numeric to broadcast-?
+GNB="0"
+
+# THESE MUST BE SET IF GNB="1"
+GNB_NETWORK=""
+GNB_GATEWAY=""
+GNB_BROADCAST=""
