@@ -6,7 +6,6 @@ set -o allexport
 source vars
 set +o allexport
 clear
-
 echo "Hi. Please wait while I set up the variables..."
 echo "API Username set to: $API_USER"
 echo "API Key set to: $API_KEY"
@@ -15,9 +14,7 @@ echo "Starting int of last octet set to: $IP_FINAL"
 echo "End int of last octet set to: $IP_FINAL_END"
 echo "Domain format will look like: IP-$DOMAIN"
 sleep 5
-
 if [ "$GNB" -eq "0" ]; then
-
 echo "Not setting first 2 numerics and last 1 numeric to identifiers for network, gateway, and broadcast..."
 sleep 5
 clear
@@ -26,25 +23,20 @@ sleep 1
 for i in $(seq $IP_FINAL $IP_FINAL_END);do
 curl -s https://$API_USER:$API_KEY@api.softlayer.com/rest/v3/SoftLayer_Dns_Domain/createPtrRecord/$IP_RANGE.$i/$i-$DOMAIN.json | jq
 done
-
 else
-
 echo "Will set first 2 numerics and last 1 numeric to identifiers for network, gateway, and broadcast..."
 sleep 5
 clear
 echo "Output below..."
 sleep 1
-
 curl -s https://$API_USER:$API_KEY@api.softlayer.com/rest/v3/SoftLayer_Dns_Domain/createPtrRecord/$IP_RANGE.$GNB_NETWORK/network-$DOMAIN.json | jq
-#sleep 1
-
 curl -s https://$API_USER:$API_KEY@api.softlayer.com/rest/v3/SoftLayer_Dns_Domain/createPtrRecord/$IP_RANGE.$GNB_GATEWAY/gateway-$DOMAIN.json | jq
-#sleep 1
-
 for i in $(seq $IP_FINAL $IP_FINAL_END);do
 curl -s https://$API_USER:$API_KEY@api.softlayer.com/rest/v3/SoftLayer_Dns_Domain/createPtrRecord/$IP_RANGE.$i/$i-$DOMAIN.json | jq
 sleep 1
 done
-
 curl -s https://$API_USER:$API_KEY@api.softlayer.com/rest/v3/SoftLayer_Dns_Domain/createPtrRecord/$IP_RANGE.$GNB_BROADCAST/broadcast-$DOMAIN.json | jq
+fi
+if [ "$CF" -eq "1" ]; then
+bash cf-set-a
 fi

@@ -8,18 +8,28 @@ API_KEY=""
 IP_RANGE="0.0.0"
 
 # The ### STARTING ### numeric of the fourth octet
-IP_FINAL="0"
+IP_FINAL="2"
 
 # The end numeric for the fourth octet
-IP_FINAL_END="255"
+IP_FINAL_END="254"
 
 # The Domain format. IP will be prepended to string
 DOMAIN="0-0-0.domain.com"
 
 # Should I set the first 2 numerics to network- and gateway- and the last numeric to broadcast-?
-GNB="0"
+GNB="1"
 
 # THESE MUST BE SET IF GNB="1"
-GNB_NETWORK=""
-GNB_GATEWAY=""
-GNB_BROADCAST=""
+GNB_NETWORK="0"
+GNB_GATEWAY="1"
+GNB_BROADCAST="255"
+
+# Using CloudFlare?
+CF="1"
+
+# CloudFlare API Username
+CF_API_USER=""
+# CloudFlare API Key
+CF_API_KEY=""
+# CloudFlare Domain Key
+CF_DOMAIN_KEY=""

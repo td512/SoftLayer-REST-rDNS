@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Thank you to user4040650 from StackOverflow for providing this answer
+# Answer can be found here: http://stackoverflow.com/a/30969768/3831621
+set -o allexport
+source vars
+set +o allexport
+clear
+if [ "$GNB" -eq "0" ]; then
+echo "Not setting first 2 numerics and last 1 numeric to identifiers for network, gateway, and broadcast..."
+sleep 5
+clear
+for i in $(seq $IP_FINAL $IP_FINAL_END);do
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_DOMAIN_KEY/dns_records" -H "X-Auth-Email: $CF_API_USER" -H "X-Auth-Key: $CF_API_KEY" -H "Content-Type: application/json" --data '{"type":"A","name":"'"$i-$DOMAIN"'","content":"'"$IP_RANGE.$i"'","ttl":1}' | jq
+done
+else
+echo "Will set first 2 numerics and last 1 numeric to identifiers for network, gateway, and broadcast..."
+sleep 5
+clear
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_DOMAIN_KEY/dns_records" -H "X-Auth-Email: $CF_API_USER" -H "X-Auth-Key: $CF_API_KEY" -H "Content-Type: application/json" --data '{"type":"A","name":"'"network-$DOMAIN"'","content":"'"$IP_RANGE.$GNB_NETWORK"'","ttl":1}' | jq
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_DOMAIN_KEY/dns_records" -H "X-Auth-Email: $CF_API_USER" -H "X-Auth-Key: $CF_API_KEY" -H "Content-Type: application/json" --data '{"type":"A","name":"'"gateway-$DOMAIN"'","content":"'"$IP_RANGE.$GNB_GATEWAY"'","ttl":1}' | jq
+for i in $(seq $IP_FINAL $IP_FINAL_END);do
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_DOMAIN_KEY/dns_records" -H "X-Auth-Email: $CF_API_USER" -H "X-Auth-Key: $CF_API_KEY" -H "Content-Type: application/json" --data '{"type":"A","name":"'"$i-$DOMAIN"'","content":"'"$IP_RANGE.$i"'","ttl":1}' | jq
+done
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_DOMAIN_KEY/dns_records" -H "X-Auth-Email: $CF_API_USER" -H "X-Auth-Key: $CF_API_KEY" -H "Content-Type: application/json" --data '{"type":"A","name":"'"network-$DOMAIN"'","content":"'"$IP_RANGE.$GNB_BROADCAST"'","ttl":1}' | jq
+fi
